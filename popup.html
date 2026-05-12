@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Filtre Indeed Écoles</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f0f13;
+      color: #e8e8f0;
+      width: 300px;
+      min-height: 360px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid #2a2a3e;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .logo {
+      font-size: 22px;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: #7878a8;
+      margin-top: 2px;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .stat {
+      flex: 1;
+      background: #1e1e30;
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+      border: 1px solid #2a2a44;
+    }
+
+    .stat-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ff6b6b;
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: #7878a8;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .body {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: #1a1a2a;
+      border-radius: 8px;
+      border: 1px solid #2a2a3e;
+      transition: background 0.15s;
+    }
+
+    .toggle-row:hover {
+      background: #1e1e34;
+    }
+
+    .toggle-info {}
+
+    .toggle-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e0e0f0;
+    }
+
+    .toggle-desc {
+      font-size: 11px;
+      color: #6868a0;
+      margin-top: 2px;
+    }
+
+    /* Toggle switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .switch input { display: none; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #2a2a44;
+      border-radius: 22px;
+      transition: 0.2s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      top: 3px;
+      background: #7878a8;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    input:checked + .slider {
+      background: #4a6cf7;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(18px);
+      background: #fff;
+    }
+
+    .select-row {
+      padding: 10px 12px;
+      background: #1a1a2a;
+      border-radius: 8px;
+      border: 1px solid #2a2a3e;
+    }
+
+    .select-row label {
+      font-size: 12px;
+      color: #9898c0;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 6px 10px;
+      background: #0f0f1a;
+      color: #e0e0f0;
+      border: 1px solid #3a3a54;
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: #4a6cf7;
+    }
+
+    .footer {
+      padding: 10px 20px 14px;
+      border-top: 1px solid #1e1e30;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .version {
+      font-size: 10px;
+      color: #444468;
+    }
+
+    .refresh-btn {
+      background: #4a6cf7;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .refresh-btn:hover {
+      background: #5a7cff;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+      margin-right: 6px;
+      box-shadow: 0 0 6px #4caf5088;
+    }
+
+    .status-dot.off {
+      background: #555;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-top">
+      <span class="logo">🎓</span>
+      <div>
+        <div class="title">Filtre Écoles & Alternances</div>
+        <div class="subtitle">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Actif sur Indeed</span>
+        </div>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-num" id="countFlagged">—</span>
+        <span class="stat-label">Annonces suspectes</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="countHidden">—</span>
+        <span class="stat-label">Masquées</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <div class="toggle-title">Filtre activé</div>
+        <div class="toggle-desc">Détecter les annonces d'écoles</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggleEnabled" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <div class="toggle-title">Masquer les 🚨 HIGH</div>
+        <div class="toggle-desc">Cacher les annonces très suspectes</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggleHide" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="select-row">
+      <label>Niveau de signalement affiché</label>
+      <select id="selectLevel">
+        <option value="both">Tous (🚨 High + ⚠️ Moyen)</option>
+        <option value="high">🚨 Seulement les très suspects</option>
+        <option value="medium">⚠️ Seulement les moyennement suspects</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="version">v1.0.0 — indeed.com / indeed.fr</span>
+    <button class="refresh-btn" id="refreshBtn">↻ Relancer</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

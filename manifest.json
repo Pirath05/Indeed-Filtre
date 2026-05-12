@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Indeed — Filtre Écoles & Alternances",
+  "version": "1.0.0",
+  "description": "Détecte et signale les annonces d'alternance postées par des écoles sur Indeed.",
+  "icons": {
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.indeed.com/*", "*://*.indeed.fr/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Filtre Indeed Écoles"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
+}

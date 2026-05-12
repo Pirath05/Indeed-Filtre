@@ -1,0 +1,46 @@
+/* Indeed Filtre Écoles — styles.css */
+
+.ief-badge {
+  animation: ief-slide-in 0.25s ease-out;
+}
+
+@keyframes ief-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ief-badge-label {
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.ief-badge-detail {
+  font-size: 11px;
+  opacity: 0.85;
+  flex: 1;
+  font-style: italic;
+}
+
+.ief-dismiss {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 4px;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.ief-dismiss:hover {
+  opacity: 1;
+}
